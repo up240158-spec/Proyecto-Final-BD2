@@ -3,6 +3,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { Autor } from './autores/autor.entity';
+import { Categoria } from './categorias/categoria.entity';
+import { Libro } from './libros/libro.entity';
+import { Usuario } from './usuarios/usuario.entity';
+import { Prestamo } from './prestamos/prestamo.entity';
 
 @Module({
   imports: [
@@ -22,6 +27,7 @@ import { AppService } from './app.service';
         synchronize: false,
       }),
     }),
+    TypeOrmModule.forFeature([Autor, Categoria, Libro, Usuario, Prestamo]),
   ],
   controllers: [AppController],
   providers: [AppService],
