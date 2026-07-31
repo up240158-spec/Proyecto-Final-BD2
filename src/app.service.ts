@@ -1,11 +1,19 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { Autor } from './autores/autor.entity';
 import { Categoria } from './categorias/categoria.entity';
+import { CreateCategoriaDto } from './categorias/dto/create-categoria.dto';
+
 import { Libro } from './libros/libro.entity';
+import { CreateLibroDto } from './libros/dto/create-libro.dto';
+
 import { Usuario } from './usuarios/usuario.entity';
+import { CreateUsuarioDto } from './usuarios/dto/create-usuario.dto';
+
 import { Prestamo } from './prestamos/prestamo.entity';
+import { CreatePrestamoDto } from './prestamos/dto/create-prestamo.dto';
 
 @Injectable()
 export class AppService {
@@ -17,119 +25,65 @@ export class AppService {
     @InjectRepository(Prestamo) private prestamoRepo: Repository<Prestamo>,
   ) {}
 
-  // AUTORES 
-  findAllAutores() {
+  //  AUTORES 
+  obtenerAutores() {
     return this.autorRepo.find();
   }
-  findOneAutor(id: number) {
-    return this.autorRepo.findOneBy({ id_autor: id });
-  }
-  createAutor(data: Partial<Autor>) {
-    return this.autorRepo.save(data);
-  }
-  async updateAutor(id: number, data: Partial<Autor>) {
-    await this.autorRepo.update(id, data);
-    return this.findOneAutor(id);
-  }
-  deleteAutor(id: number) {
+  eliminarAutor(id: number) {
     return this.autorRepo.delete(id);
   }
 
-  // CATEGORIAS 
-  findAllCategorias() {
-    return this.categoriaRepo.find();
+  //  CATEGORIAS 
+  crearCategoria(dto: CreateCategoriaDto) {
+    return this.categoriaRepo.save(dto);
   }
-  findOneCategoria(id: number) {
+  async actualizarCategoria(id: number, dto: CreateCategoriaDto) {
+    await this.categoriaRepo.update(id, dto);
     return this.categoriaRepo.findOneBy({ id_categoria: id });
-  }
-  createCategoria(data: Partial<Categoria>) {
-    return this.categoriaRepo.save(data);
-  }
-  async updateCategoria(id: number, data: Partial<Categoria>) {
-    await this.categoriaRepo.update(id, data);
-    return this.findOneCategoria(id);
-  }
-  deleteCategoria(id: number) {
-    return this.categoriaRepo.delete(id);
   }
 
   // LIBROS 
-  findAllLibros() {
-    return this.libroRepo.find({ relations: ['autor', 'categoria'] });
+  crearLibro(dto: CreateLibroDto) {
+    const libro = this.libroRepo.create({
+      titulo: dto.titulo,
+      anio: dto.anio,
+      autor: { id_autor: dto.autor_id },
+      categoria: { id_categoria: dto.categoria_id },
+    });
+    return this.libroRepo.save(libro);
   }
-  findOneLibro(id: number) {
+  obtenerLibroPorId(id: number) {
     return this.libroRepo.findOne({
       where: { id_libro: id },
       relations: ['autor', 'categoria'],
     });
   }
-  createLibro(data: any) {
-    const libro = this.libroRepo.create({
-      titulo: data.titulo,
-      anio: data.anio,
-      autor: { id_autor: data.autor_id },
-      categoria: { id_categoria: data.categoria_id },
-    });
-    return this.libroRepo.save(libro);
-  }
-  async updateLibro(id: number, data: any) {
-    const libro: any = { titulo: data.titulo, anio: data.anio };
-    if (data.autor_id) libro.autor = { id_autor: data.autor_id };
-    if (data.categoria_id) libro.categoria = { id_categoria: data.categoria_id };
-    await this.libroRepo.update(id, libro);
-    return this.findOneLibro(id);
-  }
-  deleteLibro(id: number) {
-    return this.libroRepo.delete(id);
-  }
 
   // USUARIOS 
-  findAllUsuarios() {
-    return this.usuarioRepo.find();
-  }
-  findOneUsuario(id: number) {
+  async actualizarUsuario(id: number, dto: CreateUsuarioDto) {
+    await this.usuarioRepo.update(id, dto);
     return this.usuarioRepo.findOneBy({ id_usuario: id });
   }
-  createUsuario(data: Partial<Usuario>) {
-    return this.usuarioRepo.save(data);
-  }
-  async updateUsuario(id: number, data: Partial<Usuario>) {
-    await this.usuarioRepo.update(id, data);
-    return this.findOneUsuario(id);
-  }
-  deleteUsuario(id: number) {
+  eliminarUsuario(id: number) {
     return this.usuarioRepo.delete(id);
   }
 
-  // PRESTAMOS 
-  findAllPrestamos() {
+  //  PRESTAMOS 
+  obtenerPrestamos() {
     return this.prestamoRepo.find({ relations: ['libro', 'usuario'] });
   }
-  findOnePrestamo(id: number) {
-    return this.prestamoRepo.findOne({
-      where: { id_prestamo: id },
-      relations: ['libro', 'usuario'],
-    });
-  }
-  createPrestamo(data: any) {
+  crearPrestamo(dto: CreatePrestamoDto) {
     const prestamo = this.prestamoRepo.create({
-      libro: { id_libro: data.libro_id },
-      usuario: { id_usuario: data.usuario_id },
-      fecha_prestamo: data.fecha_prestamo,
-      fecha_devolucion: data.fecha_devolucion,
-      devuelto: data.devuelto ?? false,
+      libro: { id_libro: dto.libro_id },
+      usuario: { id_usuario: dto.usuario_id },
+      fecha_prestamo: new Date(dto.fecha_prestamo),
+      fecha_devolucion: dto.fecha_devolucion ? new Date(dto.fecha_devolucion) : null,
+      devuelto: dto.devuelto ?? false,
     });
     return this.prestamoRepo.save(prestamo);
   }
-  async updatePrestamo(id: number, data: any) {
-    await this.prestamoRepo.update(id, data);
-    return this.findOnePrestamo(id);
-  }
-  deletePrestamo(id: number) {
-    return this.prestamoRepo.delete(id);
-  }
 
-  // ---------- CONSULTAS CON RELACIONES ----------
+  // CONSULTAS CON RELACIONES (mínimo 2 que pide el profe) 
   librosConAutorYCategoria() {
     return this.libroRepo.find({ relations: ['autor', 'categoria'] });
   }
