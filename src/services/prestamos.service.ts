@@ -19,7 +19,7 @@ export class PrestamosService {
     prestamo.libro = { id_libro: dto.libro_id } as any;
     prestamo.usuario = { id_usuario: dto.usuario_id } as any;
     prestamo.fecha_prestamo = new Date(dto.fecha_prestamo);
-    prestamo.fecha_devolucion = dto.fecha_devolucion ? new Date(dto.fecha_devolucion) : undefined;
+    prestamo.fecha_devolucion = dto.fecha_devolucion ? new Date(dto.fecha_devolucion) : null;
     return this.prestamoRepo.save(prestamo);
   }
 

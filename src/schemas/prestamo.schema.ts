@@ -19,5 +19,5 @@ export class Prestamo {
   fecha_prestamo: Date;
 
   @Column({ type: 'date', nullable: true })
-  fecha_devolucion: Date;
+  fecha_devolucion: Date | null;
 }
