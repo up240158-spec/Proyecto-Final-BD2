@@ -20,7 +20,4 @@ export class Prestamo {
 
   @Column({ type: 'date', nullable: true })
   fecha_devolucion: Date;
-
-  @Column({ default: false })
-  devuelto: boolean;
 }

@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
-import { Autor } from './autores/autor.entity';
-import { Categoria } from './categorias/categoria.entity';
-import { Libro } from './libros/libro.entity';
-import { Usuario } from './usuarios/usuario.entity';
-import { Prestamo } from './prestamos/prestamo.entity';
+
+import { AutoresModule } from './modules/autores.module';
+import { CategoriasModule } from './modules/categorias.module';
+import { LibrosModule } from './modules/libros.module';
+import { UsuariosModule } from './modules/usuarios.module';
+import { PrestamosModule } from './modules/prestamos.module';
 
 @Module({
   imports: [
@@ -23,13 +22,15 @@ import { Prestamo } from './prestamos/prestamo.entity';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_DATABASE'),
-        entities: [__dirname + '/**/*.entity{.ts,.js}'],
+        entities: [__dirname + '/schemas/*.schema{.ts,.js}'],
         synchronize: false,
       }),
     }),
-    TypeOrmModule.forFeature([Autor, Categoria, Libro, Usuario, Prestamo]),
+    AutoresModule,
+    CategoriasModule,
+    LibrosModule,
+    UsuariosModule,
+    PrestamosModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

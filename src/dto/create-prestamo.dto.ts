@@ -1,10 +1,16 @@
-import {}
+import { IsNumber, IsDateString, IsOptional } from 'class-validator';
 
 export class CreatePrestamoDto {
+  @IsNumber()
   libro_id: number;
+
+  @IsNumber()
   usuario_id: number;
-  @IsDate()
-  fecha_prestamo: Date;
-  fecha_devolucion: Date;
-  //devuelto: boolean;
+
+  @IsDateString()
+  fecha_prestamo: string;
+
+  @IsOptional()
+  @IsDateString()
+  fecha_devolucion: string;
 }
