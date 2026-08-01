@@ -68,6 +68,9 @@ src/
   services/      → lógica que se comunica con la base de datos
 ```
 
+La carpeta `dto/` valida que los datos que llegan al backend tengan el formato
+correcto antes de guardarse en la base de datos.
+
 ### Endpoints disponibles
 
 | Método | Ruta | Descripción |
