@@ -24,6 +24,7 @@ Proyecto desarrollado con NestJS (backend) y MySQL (base de datos), que incluye 
 | `@nestjs/typeorm`, `typeorm`, `mysql2` | Conectar el backend a MySQL y mapear las tablas a entidades de TypeScript |
 | `@nestjs/config` | Leer variables de entorno (`.env`) para no exponer credenciales en el código |
 | `class-validator`, `class-transformer` | Validar los datos que llegan en las peticiones (DTOs) antes de guardarlos en la base de datos |
+| `@nestjs/swagger` | Generar documentación interactiva de la API (elemento novedoso, ver sección abajo) |
 
 ### Instalación
 
@@ -32,6 +33,7 @@ npm install
 npm install @nestjs/typeorm typeorm mysql2
 npm install @nestjs/config
 npm install --save class-validator class-transformer
+npm install @nestjs/swagger
 ```
 
 ### Configuración
@@ -51,9 +53,6 @@ DB_DATABASE=biblioteca
 ```bash
 # desarrollo
 npm run start:dev
-
-# producción
-npm run start:prod
 ```
 
 El servidor corre por defecto en `http://localhost:3000`.
@@ -90,6 +89,16 @@ src/
 
 - Colección exportada: `postman/Biblioteca_API.json`
 - Capturas de las solicitudes: carpeta `postman/capturas/`
+
+## 4. Elemento novedoso: Documentación interactiva con Swagger
+
+Se integró **Swagger** (`@nestjs/swagger`) para generar documentación interactiva de la API. Con el servidor corriendo, se puede acceder a:
+
+```
+http://localhost:3000/api
+```
+
+Ahí se listan todos los endpoints y se pueden probar directo desde el navegador, sin necesidad de Postman.
 
 ## Equipo
 
