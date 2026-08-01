@@ -23,12 +23,12 @@ export class LibrosService {
   obtenerLibroPorId(id: number) {
     return this.libroRepo.findOne({
       where: { id_libro: id },
-      relations: ['autor', 'categoria'],
+      relations: { autor: true, categoria: true },
     });
   }
 
-  // Consulta con relaciones no.1: libros con nombre de autor y categoria
+  // Consulta con relaciones no.1: libros con nombre de autor y categoría
   librosConAutorYCategoria() {
-    return this.libroRepo.find({ relations: ['autor', 'categoria'] });
+    return this.libroRepo.find({ relations: { autor: true, categoria: true } });
   }
 }

@@ -11,24 +11,23 @@ export class PrestamosService {
   ) {}
 
   obtenerPrestamos() {
-    return this.prestamoRepo.find({ relations: ['libro', 'usuario'] });
+    return this.prestamoRepo.find({ relations: { libro: true, usuario: true } });
   }
 
   crearPrestamo(dto: CreatePrestamoDto) {
-    const prestamo = this.prestamoRepo.create({
-      libro: { id_libro: dto.libro_id },
-      usuario: { id_usuario: dto.usuario_id },
-      fecha_prestamo: new Date(dto.fecha_prestamo),
-      fecha_devolucion: dto.fecha_devolucion ? new Date(dto.fecha_devolucion) : null,
-    });
+    const prestamo = new Prestamo();
+    prestamo.libro = { id_libro: dto.libro_id } as any;
+    prestamo.usuario = { id_usuario: dto.usuario_id } as any;
+    prestamo.fecha_prestamo = new Date(dto.fecha_prestamo);
+    prestamo.fecha_devolucion = dto.fecha_devolucion ? new Date(dto.fecha_devolucion) : undefined;
     return this.prestamoRepo.save(prestamo);
   }
 
-  // Consulta con relaciones no.2: prestamos activos 
+  // Consulta con relaciones no.2: préstamos activos (sin fecha de devolución)
   prestamosActivos() {
     return this.prestamoRepo.find({
       where: { fecha_devolucion: IsNull() },
-      relations: ['libro', 'usuario'],
+      relations: { libro: true, usuario: true },
     });
   }
 }
