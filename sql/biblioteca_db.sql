@@ -76,8 +76,8 @@ INSERT INTO libros (titulo, anio, autor_id, categoria_id) VALUES
 ('La chica pájaro', 2015, 3, 3),
 ('Just Kids', 2010, 4, 4),
 ('Historias de mujeres', 1995, 5, 5),
-('La metamorfosis', 1915, 6, 6);
-
+('La metamorfosis', 1915, 6, 6),
+('El nombre del viento', 2007, 1, 1);
 -- Usuarios
 INSERT INTO usuarios (nombre, email) VALUES
 ('Yaya', 'yaya@email.com'),
